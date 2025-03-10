@@ -80,50 +80,6 @@ npm run serve
 
 O projeto será compilado e, se não houver erros, você poderá acessá-lo em [http://localhost:8080/](http://localhost:8080/).
 
-### Passo 5: Verifique os Endpoints e a Comunicação com o Back-End
-
-Certifique-se de que o arquivo `src/common/endpoints.js` esteja configurado corretamente. Por exemplo:
-
-```js
-const endpoints = {
-  AGENDAMENTOS: '/api/agendamentos/',
-  FUNCIONARIOS: '/api/funcionarios/'
-}
-
-export default endpoints
-```
-
-No arquivo **main.js** os endpoints são adicionados à instância do Vue:
-
-```js
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import vuetify from './plugins/vuetify'
-import HttpGeneric from '@/services/generic.service'
-import endpoints from '@/common/endpoints'
-import GenericMixin from '@/mixins/GenericMixin'
-import VueToast from 'vue-toast-notification'
-import VueTheMask from 'vue-the-mask'
-import 'vue-toast-notification/dist/theme-sugar.css'
-
-Vue.config.productionTip = false
-
-Vue.prototype.$endpoints = endpoints
-Vue.prototype.$api = HttpGeneric
-
-Vue.use(VueToast)
-Vue.use(VueTheMask)
-Vue.mixin(GenericMixin)
-
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
-```
 
 Verifique se a URL base do back-end está definida corretamente no serviço genérico (HttpGeneric) para que as requisições sejam enviadas para o back-end.
 
