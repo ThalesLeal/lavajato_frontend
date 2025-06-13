@@ -3,16 +3,35 @@
     flat
     style="overflow-x:auto; white-space: nowrap;"
   >
-    <v-btn
-      v-if="user && ((user.roles && user.roles.includes('core.change_permissao')) || user.is_superuser)"
-      text
-      to="/lavagens"
-    >
-      <v-icon class="material-icons-outlined mr-1">
-        directions_car
-      </v-icon>
-      Lavagem
-    </v-btn>
+    <!-- Menu de Lavagens -->
+    <v-menu offset-y>
+      <template #activator="{ on, attrs }">
+        <v-btn
+          v-if="user && ((user.roles && user.roles.includes('core.change_vistoria')) || user.is_superuser)"
+          text
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon class="material-icons-outlined mr-1">
+            directions_car
+          </v-icon>
+          Lavagens
+        </v-btn>
+      </template>
+      <v-list dense>
+        <!-- Opção para Lista de Lavagens -->
+        <v-list-item @click="goToLavagemList">
+          <v-list-item-title>Lista de Lavagens</v-list-item-title>
+        </v-list-item>
+
+        <!-- Opção para Cadastro de Lavagem -->
+        <v-list-item @click="goToLavagemCreate">
+          <v-list-item-title>Cadastro de Lavagem</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <!-- Menu de Funcionários -->
     <v-menu offset-y>
       <template #activator="{ on, attrs }">
         <v-btn
@@ -24,15 +43,23 @@
           <v-icon class="material-icons-outlined mr-1">
             checklist
           </v-icon>
-          Vistoria
+          Funcionários
         </v-btn>
       </template>
       <v-list dense>
-        <v-list-item to="/vistoria">
-          <v-list-item-title>Vistorias</v-list-item-title>
+        <!-- Opção para Lista de Funcionários -->
+        <v-list-item @click="goToFuncionarioList">
+          <v-list-item-title>Lista de Funcionários</v-list-item-title>
+        </v-list-item>
+
+        <!-- Opção para Cadastro de Funcionário -->
+        <v-list-item @click="goToFuncionarioCreate">
+          <v-list-item-title>Cadastro de Funcionário</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <!-- Botões de Relatórios e Configurações -->
     <v-btn
       v-if="user && ((user.roles && user.roles.includes('core.change_permissao')) || user.is_superuser)"
       text
@@ -43,6 +70,7 @@
       </v-icon>
       Relatórios
     </v-btn>
+
     <v-btn
       v-if="user && ((user.roles && user.roles.includes('core.change_permissao')) || user.is_superuser)"
       text
@@ -65,8 +93,38 @@ export default {
       const stored = localStorage.getItem('semob@user')
       return stored ? JSON.parse(stored) : null
     }
+  },
+
+  methods: {
+  // Navegar para a lista de lavagens, com verificação para evitar navegação redundante
+  goToLavagemList() {
+    if (this.$route.path !== '/lavagens') {
+      this.$router.push('/lavagens')
+    }
+  },
+  
+  // Navegar para o cadastro de lavagem, com verificação para evitar navegação redundante
+  goToLavagemCreate() {
+    if (this.$route.path !== '/lavagens/create') {
+      this.$router.push('/lavagens/create')
+    }
+  },
+  
+  // Navegar para a lista de funcionários, com verificação para evitar navegação redundante
+  goToFuncionarioList() {
+    if (this.$route.path !== '/funcionarios') {
+      this.$router.push('/funcionarios')
+    }
+  },
+  
+  // Navegar para a página de cadastro de funcionário, com verificação para evitar navegação redundante
+  goToFuncionarioCreate() {
+    if (this.$route.path !== '/funcionarios/create') {
+      this.$router.push('/funcionarios/create')
+    }
+
   }
-}
+}}
 </script>
 
 <style lang="scss" scoped>

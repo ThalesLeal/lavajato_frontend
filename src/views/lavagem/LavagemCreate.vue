@@ -1,12 +1,18 @@
 <template>
   <v-container fluid>
-    <s-pagebar page-title="Agendar Lavagem" :breadcrumbs="breadcrumbs" />
+    <s-pagebar
+      page-title="Agendar Lavagem"
+      :breadcrumbs="breadcrumbs"
+    />
 
     <v-card flat>
       <v-card-text>
         <v-row dense>
           <!-- Campo para a placa do veículo -->
-          <v-col cols="12" sm="4">
+          <v-col
+            cols="12"
+            sm="4"
+          >
             <v-text-field
               v-model="lavagem.veiculo"
               label="Placa do Veículo"
@@ -16,7 +22,10 @@
           </v-col>
 
           <!-- Tipo de Lavagem -->
-          <v-col cols="12" sm="4">
+          <v-col
+            cols="12"
+            sm="4"
+          >
             <v-select
               v-model="lavagem.tipo_lavagem"
               :items="tipoLavagens"
@@ -27,7 +36,10 @@
           </v-col>
 
           <!-- Data do agendamento -->
-          <v-col cols="12" sm="4">
+          <v-col
+            cols="12"
+            sm="4"
+          >
             <v-menu
               ref="menuData"
               v-model="menuData"
@@ -56,7 +68,10 @@
           </v-col>
 
           <!-- Hora de Início -->
-          <v-col cols="12" sm="6">
+          <v-col
+            cols="12"
+            sm="6"
+          >
             <v-text-field
               v-model="lavagem.hora_inicio"
               label="Hora Início (HH:MM)"
@@ -66,7 +81,10 @@
           </v-col>
 
           <!-- Hora de Término -->
-          <v-col cols="12" sm="6">
+          <v-col
+            cols="12"
+            sm="6"
+          >
             <v-text-field
               v-model="lavagem.hora_fim"
               label="Hora Fim (HH:MM)"
@@ -77,7 +95,10 @@
 
           <!-- Observações -->
           <v-col cols="12">
-            <v-textarea v-model="lavagem.observacao" label="Observações" />
+            <v-textarea
+              v-model="lavagem.observacao"
+              label="Observações"
+            />
           </v-col>
 
           <!-- Seleção de Funcionários (múltiplo) -->
@@ -92,16 +113,34 @@
           </v-col>
 
           <!-- Exemplo de upload (Dropzone) -->
-          <v-col cols="12" sm="12">
-            <div ref="imageDropzone" class="dropzone" />
+          <v-col
+            cols="12"
+            sm="12"
+          >
+            <div
+              ref="imageDropzone"
+              class="dropzone"
+            />
           </v-col>
         </v-row>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer />
-        <v-btn outlined color="blue-grey darken-4" @click="$router.back()">Voltar</v-btn>
-        <v-btn color="blue-grey darken-4" dark @click="salvar">Salvar</v-btn>
+        <v-btn
+          outlined
+          color="blue-grey darken-4"
+          @click="$router.back()"
+        >
+          Voltar
+        </v-btn>
+        <v-btn
+          color="blue-grey darken-4"
+          dark
+          @click="salvar"
+        >
+          Salvar
+        </v-btn>
       </v-card-actions>
       <prompt-dialog ref="prompt" />
     </v-card>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <prompt-dialog ref="prompt" />
     <v-data-table
       :headers="headers"
       :items="items"
@@ -16,7 +15,7 @@
               <v-btn
                 v-bind="attrs"
                 icon
-                @click="editarAgendamento(item)"
+                @click="editarFuncionario(item)"
               >
                 <v-icon class="material-icons-outlined">
                   visibility
@@ -30,7 +29,7 @@
               <v-btn
                 v-bind="attrs"
                 icon
-                @click="deletarAgendamento(item.id)"
+                @click="deletarFuncionario(item.id)"
               >
                 <v-icon class="material-icons-outlined">
                   delete
@@ -42,8 +41,9 @@
         </v-toolbar-items>
       </template>
     </v-data-table>
-    <!-- O botão "Nova Lavagem" foi removido -->
-    <prompt-dialog ref="prompt" />
+
+    <!-- Coloque o PromptDialog aqui -->
+    <PromptDialog ref="prompt" />
   </div>
 </template>
 
@@ -52,17 +52,16 @@ import PromptDialog from '@/components/PromptDialog.vue'
 import endpoints from '@/common/endpoints'
 
 export default {
-  name: 'AgendamentoList',
+  name: 'FuncionarioList',
   components: { PromptDialog },
-  props: { disabledButtons: Boolean },
   data() {
     return {
       headers: [
-        { text: 'Data', value: 'data' },
-        { text: 'Hora Início', value: 'hora_inicio' },
-        { text: 'Hora Fim', value: 'hora_fim' },
-        { text: 'Veículo', value: 'veiculo' },
-        { text: 'Tipo Lavagem', value: 'tipo_lavagem' },
+        { text: 'Nome', value: 'nome' },
+        { text: 'Idade', value: 'idade' },
+        { text: 'CPF', value: 'cpf' },
+        { text: 'Telefone', value: 'telefone' },
+        { text: 'Email', value: 'email' },
         { text: 'Ações', value: 'action', sortable: false }
       ],
       items: [],
@@ -74,16 +73,16 @@ export default {
   watch: {
     options: {
       handler() {
-        this.getAgendamentos()
+        this.getFuncionarios()
       },
       deep: true
     }
   },
   mounted() {
-    this.getAgendamentos()
+    this.getFuncionarios()
   },
   methods: {
-    async getAgendamentos() {
+    async getFuncionarios() {
       try {
         const { sortBy, sortDesc, page, itemsPerPage } = this.options
         const query = {
@@ -92,37 +91,40 @@ export default {
           ordering: `${sortDesc && sortDesc[0] ? '-' : ''}${sortBy}`
         }
         const response = await this.$api.list({
-          resource: endpoints.AGENDAMENTOS,
+          resource: endpoints.FUNCIONARIOS,
           query
         })
         this.items = response.data.results
         this.totalItems = response.data.count
       } catch (err) {
-        console.error('Erro ao buscar agendamentos:', err)
+        console.error('Erro ao buscar funcionários:', err)
       }
     },
-    editarAgendamento(item) {
-      this.$router.push(`/lavagens/${item.id}`)
+    editarFuncionario(item) {
+      this.$router.push(`/funcionarios/${item.id}`)
     },
-    async deletarAgendamento(id) {
-      const resposta = await this.$refs.prompt.open(
-        'Excluir Agendamento',
-        'Deseja realmente excluir este agendamento?',
-        'Digite SIM para confirmar'
-      )
-      if (resposta && resposta.toUpperCase() === 'SIM') {
-        try {
+    async deletarFuncionario(id) {
+      try {
+        // Usando o PromptDialog para confirmar a exclusão
+        const resposta = await this.$refs.prompt.open(
+          'Excluir Funcionário',
+          'Deseja realmente excluir este funcionário?',
+          'Digite SIM para confirmar'
+        )
+
+        // Se o usuário confirmar, exclui o funcionário
+        if (resposta && resposta.toUpperCase() === 'SIM') {
           await this.$api.destroy({
-            resource: endpoints.AGENDAMENTOS,
+            resource: endpoints.FUNCIONARIOS,
             id
           })
-          this.getAgendamentos()
-        } catch (err) {
-          this.$toast.open({
-            message: err.response?.data?.detail || 'Erro ao excluir',
-            type: 'error'
-          })
+          this.getFuncionarios()  // Atualiza a lista após a exclusão
         }
+      } catch (err) {
+        this.$toast.open({
+          message: err.response?.data?.detail || 'Erro ao excluir',
+          type: 'error'
+        })
       }
     }
   }
@@ -130,5 +132,5 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos específicos, se necessário */
+
 </style>

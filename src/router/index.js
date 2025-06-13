@@ -6,16 +6,46 @@ Vue.use(VueRouter)
 
 const Layout = () => import('@/layout/SApp.vue')
 
-const routeOptions = [
+// Rotas específicas de Lavagem
+const routeOptionsLavagem = [
   { path: 'lavagens', name: 'AgendamentoList' },
   { path: 'lavagens/create', name: 'LavagemCreate' },
-  { path: 'lavagens/:id', name: 'LavagemEdit' }
+  { path: 'lavagens/:id', name: 'LavagemEdit' },
 ]
 
-const routes = routeOptions.map(route => ({
+// Rotas específicas de Funcionário
+const routeOptionsFuncionario = [
+  { path: 'funcionarios', name: 'FuncionarioList' },
+  { path: 'funcionarios/create', name: 'FuncionarioCreate' },
+]
+
+// Função para importar componentes de Lavagem
+const importLavagemComponent = (name) => {
+  return () => import(`@/views/lavagem/${name}.vue`)
+}
+
+// Função para importar componentes de Funcionário
+const importFuncionarioComponent = (name) => {
+  return () => import(`@/views/funcionarios/${name}.vue`)
+}
+
+// Mapear as rotas para os componentes de Lavagem
+const routesLavagem = routeOptionsLavagem.map(route => ({
   ...route,
-  component: () => import(`@/views/lavagem/${route.name}.vue`)
+  component: importLavagemComponent(route.name)
 }))
+
+// Mapear as rotas para os componentes de Funcionário
+const routesFuncionario = routeOptionsFuncionario.map(route => ({
+  ...route,
+  component: importFuncionarioComponent(route.name)
+}))
+
+// Juntando todas as rotas
+const routes = [
+  ...routesLavagem,
+  ...routesFuncionario,
+]
 
 const router = new VueRouter({
   mode: 'history',
@@ -49,7 +79,7 @@ router.beforeEach((to, from, next) => {
       message: "Você não tem permissão para executar esta ação",
       type: "error"
     })
-    // Você pode decidir se bloqueia ou não a navegação, ex.: next(false)
+    next(false) // Bloqueia a navegação se o usuário não tiver permissão
   } else {
     next()
   }
