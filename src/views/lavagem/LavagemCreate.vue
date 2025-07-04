@@ -70,7 +70,7 @@
           <!-- Hora de Início -->
           <v-col
             cols="12"
-            sm="6"
+            sm="4"
           >
             <v-text-field
               v-model="lavagem.hora_inicio"
@@ -83,7 +83,7 @@
           <!-- Hora de Término -->
           <v-col
             cols="12"
-            sm="6"
+            sm="4"
           >
             <v-text-field
               v-model="lavagem.hora_fim"
@@ -93,22 +93,22 @@
             />
           </v-col>
 
-          <!-- Observações -->
-          <v-col cols="12">
-            <v-textarea
-              v-model="lavagem.observacao"
-              label="Observações"
-            />
-          </v-col>
-
           <!-- Seleção de Funcionários (múltiplo) -->
-          <v-col cols="12">
+          <v-col cols="4">
             <v-select
               v-model="lavagem.funcionarios"
               :items="funcionarios"
               label="Funcionários"
               multiple
               :error-messages="errors.funcionarios"
+            />
+          </v-col>
+
+          <!-- Observações -->
+          <v-col cols="12">
+            <v-textarea
+              v-model="lavagem.observacao"
+              label="Observações"
             />
           </v-col>
 

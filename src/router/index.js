@@ -10,7 +10,7 @@ const Layout = () => import('@/layout/SApp.vue')
 const routeOptionsLavagem = [
   { path: 'lavagens', name: 'AgendamentoList' },
   { path: 'lavagens/create', name: 'LavagemCreate' },
-  { path: 'lavagens/:id', name: 'LavagemEdit' },
+  { path: 'lavagens/:id', name: 'LavagemEdit', meta: { authorize: 'edit_lavagem' } },  // Autorização para editar
 ]
 
 // Rotas específicas de Funcionário
